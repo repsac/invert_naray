@@ -1,4 +1,4 @@
-import invert_naray
+import invert_tree
 
 
 TREE1_A = (1,  ((2, (4, 5)), 
@@ -36,8 +36,8 @@ TREE2_B = (1, ((5, (11,
 
 
 def run_tests():
-    assert invert_naray.invert(TREE1_A) == TREE1_B, "Tree 1 failed to invert correctly"
-    assert invert_naray.invert(TREE2_A) == TREE2_B, "Tree 2 failed to invert correctly"
+    assert invert_tree.invert(TREE1_A) == TREE1_B, "Tree 1 failed to invert correctly"
+    assert invert_tree.invert(TREE2_A) == TREE2_B, "Tree 2 failed to invert correctly"
 
 
 def _main():

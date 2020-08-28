@@ -1,5 +1,5 @@
-# invert_naray
-Given an N-ary group, take the values and invert them left to right. Since the group (graph, tree, etc) can be arbitrary, like the example below, it can be effectively represented in a flat list like a binary tree example
+# invert_tree
+Given a tree structure, take the values and invert them left to right. Since the group (graph, tree, etc) can be arbitrary, like the example below, it can't be effectively represented in a flat list like a binary tree example
 
 ```
             0
@@ -14,10 +14,8 @@ Given an N-ary group, take the values and invert them left to right. Since the g
                 11  12
 ```
 
-The aforementioned graph is expressed in nested tuples.
-Any index that has it's own children will be wrapped
-in its own tuple where the first index is the node and
-the second is reserved for the children
+The aforementioned tree is expressed in nested tuples. Any index that has it's own children will be wrapped
+in its own tuple where the first index is the node and the second is reserved for the children
 
 Here is an example graph represented in tuples
 `(0, ((1, (6, 7, 8)), 2, (3, (9, (10, (11, 12))))))`

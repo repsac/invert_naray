@@ -29,10 +29,10 @@ The resulting graph would then look like
          /  |  \
         3   2   1
        /\      /|\
-      9 10    / | \
+      10 9    / | \
         /\   8  7  6
        /  \ 
-      11  12
+      12  11
 """
 
 

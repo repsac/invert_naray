@@ -1,6 +1,19 @@
 import invert_tree
 
 
+BINARY_TREE_1 = tuple(range(1, 8))
+
+BINARY_TREE_2 = tuple(range(1, 32))
+BINARY_TREE_2_CONVERTED = \
+    (1, ((2, ((4, ((8, (16, 17)), 
+                   (9, (18, 19)))),
+              (5, ((10, (20, 21)), 
+                   (11, (22, 23)))))), 
+         (3, ((6, ((12, (24, 25)),
+                   (13, (26, 27)))),
+              (7, ((14, (28, 29)),
+                   (15, (30, 31))))))))
+
 TREE1_A = (1,  ((2, (4, 5)), 
                 (3, (6, 7))))
 TREE1_B = (1,  ((3, (7, 6)),
@@ -36,8 +49,16 @@ TREE2_B = (1, ((5, (11,
 
 
 def run_tests():
-    assert invert_tree.invert(TREE1_A) == TREE1_B, "Tree 1 failed to invert correctly"
-    assert invert_tree.invert(TREE2_A) == TREE2_B, "Tree 2 failed to invert correctly"
+    converted = invert_tree.convert_flat_binary_to_tree(BINARY_TREE_1)
+    assert converted == TREE1_A, \
+        "Binary Tree 1 failed to convert to tuple graph"
+    converted = invert_tree.convert_flat_binary_to_tree(BINARY_TREE_2)
+    assert converted == BINARY_TREE_2_CONVERTED, \
+        "Binary Tree 2 failed to convert to tuple graph"
+    assert invert_tree.invert(TREE1_A) == TREE1_B, \
+        "Tree 1 failed to invert correctly"
+    assert invert_tree.invert(TREE2_A) == TREE2_B, \
+        "Tree 2 failed to invert correctly"
 
 
 def _main():

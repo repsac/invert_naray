@@ -37,39 +37,104 @@ The resulting tree would then look like
 """
 
 
+VALID_ARRAY_TYPES = (tuple,)
+
+
 def invert(tree):
     """
     Inverts non-binary trees using a nested tuple structure
 
-    :param tuple tree: the n-aray to invert
+    :param tuple tree: the non-binary array to invert. binary arrays can be supported
     :rtype: tuple
     :returns: the inverted tree
     """
-    root = _test_for_root(tree, None)
+    return _test_for_root(tree, None).reverse()
 
-    return root.reverse()
+
+def convert_flat_binary_to_tree(binary_array):
+    """
+    Takes in a flat array, typical in binary arrays, and formats the
+    data into a graphed array that is compatible with this library
+
+    :param [] binary_array: standard binary array
+    :rtype: ()
+    :returns: formatted graph (1, (...), (...), (...))
+    """
+    root = Node(binary_array[0], None)
+ 
+    def sort_branches(x, y, parent):
+
+        def split_branch(x, y, parent):
+            try:
+                parent = Node(binary_array[x], parent)
+            except IndexError:
+                pass
+            else:
+                x = x+y
+                y *= 2
+                sort_branches(x, y, parent)
+        
+        split_branch(x, y, parent)
+        split_branch(x+1, y+1, parent)
+
+    sort_branches(1, 2, root)
+
+    return root.dump()
 
 
 def _test_for_root(data, parent):
+    """
+    A root array has only two indices. The first is an <int> and the second
+    is a valid array (see constant above) that contains node data about
+    children branches.
+
+    If the data is not recognized as a root array then it may just be an
+    array listing the nodes at that particular scope. Each node may or
+    may not have children, but that is determined in _parse_scope()
+
+    :param () data: this data could be any combination <int> and valid arrays
+                    Examples:
+                        (<int>, (..)) <-- valid subtree root
+                        (<int>, <int>, ..)
+                        (<int>, (..), <int>)
+                        ((..), <int>, (..))
+                        etc
+    :param Node() parent: parent node of the current tree level
+    """
 
     def issubtree(x):
-        return isinstance(x[0], int) and isinstance(x[1], tuple)
+        """
+        looking for a tuple that matches (<int>, (...))
+        """
+        return len(data) == 2 and (isinstance(x[0], int) and 
+                                   isinstance(x[1], VALID_ARRAY_TYPES))
 
     root = None
-    if len(data) == 2 and issubtree(data):
-        root = Node(data[0], parent=parent)
-        _parse_tree(data[1:], root)
+
+    if issubtree(data):
+        root = Node(data[0], parent)
+        _parse_scope(data[1], root)
     else:
-        _parse_tree(data, parent)
+        _parse_scope(data, parent)
 
     return root
 
 
-def _parse_tree(tree, parent):
-    for each in tree:
+def _parse_scope(scope, parent):
+    """
+    Parse a particular scope of the tree. The scope can have any
+    combination of <int> or nested tuples.
+
+    If a single <int> is found, then that node is the end of the branch
+    Otherwise, a tuple indicates a node that has children nodes
+
+    :param () scope:
+    :param Node() parent:
+    """
+    for each in scope:
         if isinstance(each, int):
-            Node(each, parent=parent)
-        elif isinstance(each, (tuple, list)):
+            Node(each, parent)
+        elif isinstance(each, VALID_ARRAY_TYPES):
             _test_for_root(each, parent)
         else:
             error = "Unknown data type '{}' for {}".format(
@@ -78,21 +143,56 @@ def _parse_tree(tree, parent):
 
 
 class Node(object):
-    def __init__(self, value, children=None, parent=None):
+    def __init__(self, value, parent):
+        """
+        Each index/<int> is identified as a unique node, and represented
+        by an instance of Node()
+
+        :param int value: The value this instance represents
+        :param Node() parent: The parent node, may be None if it's the root
+        """
         self.value = value
-        self.children = children or []
+        self.children = []
         self.parent = parent
         if self.parent is not None:
             self.parent.children.append(self)
 
+    def dump(self):
+        """
+        Dumps the current node, and it's children, to formatted
+        tuple with nested tuples to graph the hierarchy.
+
+        :rtype: ()
+        """
+        def iter_func(manifest):
+            for each in manifest:
+                yield each
+
+        return self._children(iter_func, "dump")
+            
     def reverse(self):
-        reversed_children = []
-        for child in reversed(self.children):
+        """
+        Reverses, from left to right, and dumps the current node,
+        and it's children, to formatted tuple with nested tuples
+        to graph the hierarchy.
+
+        :rtype: ()
+        """
+        return self._children(reversed, "reverse")
+    
+    def _children(self, func, method):
+        """
+        :param def() func:
+        :param self.method() method:
+        :rtype: ()
+        """
+        children = []
+        for child in func(self.children):
             if child.children:
-                reversed_children.append((child.value, child.reverse()))
+                children.append((child.value, getattr(child, method)()))
             else:
-                reversed_children.append(child.value)
-        result = tuple(reversed_children)
+                children.append(child.value)
+        result = tuple(children)
         if self.parent is None:
             result = (self.value, result)
         return result

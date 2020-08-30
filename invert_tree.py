@@ -164,11 +164,7 @@ class Node(object):
 
         :rtype: ()
         """
-        def iter_func(manifest):
-            for each in manifest:
-                yield each
-
-        return self._children(iter_func, "dump")
+        return self._children(lambda x: x, "dump")
             
     def reverse(self):
         """

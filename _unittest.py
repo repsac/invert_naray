@@ -49,10 +49,10 @@ TREE2_B = (1, ((5, (11,
 
 
 def run_tests():
-    converted = invert_tree.convert_flat_binary_to_tree(BINARY_TREE_1)
+    converted = invert_tree.binarytree_to_graph(BINARY_TREE_1)
     assert converted == TREE1_A, \
         "Binary Tree 1 failed to convert to tuple graph"
-    converted = invert_tree.convert_flat_binary_to_tree(BINARY_TREE_2)
+    converted = invert_tree.binarytree_to_graph(BINARY_TREE_2)
     assert converted == BINARY_TREE_2_CONVERTED, \
         "Binary Tree 2 failed to convert to tuple graph"
     assert invert_tree.invert(TREE1_A) == TREE1_B, \

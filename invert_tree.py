@@ -51,7 +51,7 @@ def invert(tree):
     return _test_for_root(tree, None).reverse()
 
 
-def convert_flat_binary_to_tree(binary_array):
+def binarytree_to_graph(binary_array):
     """
     Takes in a flat array, typical in binary arrays, and formats the
     data into a graphed array that is compatible with this library

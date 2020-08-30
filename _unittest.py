@@ -2,7 +2,6 @@ import invert_tree
 
 
 BINARY_TREE_1 = tuple(range(1, 8))
-
 BINARY_TREE_2 = tuple(range(1, 32))
 BINARY_TREE_2_CONVERTED = \
     (1, ((2, ((4, ((8, (16, 17)), 

@@ -48,7 +48,7 @@ def invert(tree):
     :rtype: tuple
     :returns: the inverted tree
     """
-    return _test_for_root(tree, None).reverse()
+    return _test_for_root(tree, None).invert()
 
 
 def binarytree_to_graph(binary_array):
@@ -184,9 +184,9 @@ class Node(object):
         pass
     
     @_return(reversed)
-    def reverse(self):
+    def invert(self):
         """
-        Reverses, from left to right, and dumps the current node,
+        Inverts, from left to right, and dumps the current node,
         and it's children, to formatted tuple with nested tuples
         to graph the hierarchy.
 

@@ -142,6 +142,22 @@ def _parse_scope(scope, parent):
             raise ValueError(error)
 
 
+class _return(object):
+    """
+    Decorator for managing the return states of public Node methods
+    """
+
+    def __init__(self, func):
+        self.func = func
+
+    def __call__(self, method):
+
+        def wrapped(node_inst):
+            return node_inst._children(self.func, method.__name__)
+
+        return wrapped
+
+
 class Node(object):
     def __init__(self, value, parent):
         """
@@ -157,6 +173,7 @@ class Node(object):
         if self.parent is not None:
             self.parent.children.append(self)
 
+    @_return(lambda x: x)
     def dump(self):
         """
         Dumps the current node, and it's children, to formatted
@@ -164,8 +181,9 @@ class Node(object):
 
         :rtype: ()
         """
-        return self._children(lambda x: x, "dump")
-            
+        pass
+    
+    @_return(reversed)
     def reverse(self):
         """
         Reverses, from left to right, and dumps the current node,
@@ -174,7 +192,7 @@ class Node(object):
 
         :rtype: ()
         """
-        return self._children(reversed, "reverse")
+        pass
     
     def _children(self, func, method):
         """
@@ -192,9 +210,9 @@ class Node(object):
         if self.parent is None:
             result = (self.value, result)
         return result
-
+"""
     def __repr__(self):
         return '{} => [{}]'.format(self.value, self.children)
 
     def __str__(self):
-        return self.__repr__()
+        return self.__repr__()"""

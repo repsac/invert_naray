@@ -210,9 +210,9 @@ class Node(object):
         if self.parent is None:
             result = (self.value, result)
         return result
-"""
+
     def __repr__(self):
         return '{} => [{}]'.format(self.value, self.children)
 
     def __str__(self):
-        return self.__repr__()"""
+        return self.__repr__()

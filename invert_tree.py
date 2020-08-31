@@ -48,7 +48,7 @@ def invert(tree):
     :rtype: tuple
     :returns: the inverted tree
     """
-    return _test_for_root(tree, None).invert()
+    return _test_for_root(tree, None).inverted_graph()
 
 
 def binarytree_to_graph(binary_array):
@@ -79,7 +79,7 @@ def binarytree_to_graph(binary_array):
 
     sort_branches(1, 2, root)
 
-    return root.dump()
+    return root.graph()
 
 
 def _test_for_root(data, parent):
@@ -153,7 +153,7 @@ class _return(object):
     def __call__(self, method):
 
         def wrapped(node_inst):
-            return node_inst._children(self.func, method.__name__)
+            return node_inst._graph(self.func, method.__name__)
 
         return wrapped
 
@@ -174,7 +174,7 @@ class Node(object):
             self.parent.children.append(self)
 
     @_return(lambda x: x)
-    def dump(self):
+    def graph(self):
         """
         Dumps the current node, and it's children, to formatted
         tuple with nested tuples to graph the hierarchy.
@@ -184,7 +184,7 @@ class Node(object):
         pass
     
     @_return(reversed)
-    def invert(self):
+    def inverted_graph(self):
         """
         Inverts, from left to right, and dumps the current node,
         and it's children, to formatted tuple with nested tuples
@@ -194,7 +194,7 @@ class Node(object):
         """
         pass
     
-    def _children(self, func, method):
+    def _graph(self, func, method):
         """
         :param def() func:
         :param self.method() method:
